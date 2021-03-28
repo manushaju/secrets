@@ -1,4 +1,5 @@
 //jshint esversion:6
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
@@ -8,7 +9,7 @@ const encrypt = require('mongoose-encryption');
 // To connect to the database - todoDB
 mongoose.connect('mongodb+srv://manu_shaju_mongo:626688@cluster0.rgqoc.mongodb.net/secretDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
-
+console.log(process.env.API_KEY);
 
 const app = express();
 
@@ -24,9 +25,7 @@ const userSchema = new mongoose.Schema({
   email: String,
   password: String
 });
-
-// Secret---
-const secret = "Thisisourlittlesecret";
+const secret = process.env.SECRET;
 userSchema.plugin(encrypt, {secret: secret, encryptedFields:['password']});
 
 const User = new mongoose.model('User', userSchema);
